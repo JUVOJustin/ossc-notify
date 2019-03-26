@@ -1,0 +1,36 @@
+body {
+  padding: 40px;
+}
+
+.info {
+  text-align: right;
+}
+
+.subscribe-form {
+  padding-top: 15px;
+  text-align: left;
+}
+
+.success,
+.error {
+  padding: 3px 10px;
+  display: inline;
+  border-radius: 4px;
+}
+
+.success {
+  color: darkgreen;
+  background-color: #baedad;
+}
+
+.error {
+  color: darkred;
+  background-color: #ffadad;
+}
+
+@media screen and (max-width: 64em) {
+  .info,
+  .subscribe-form {
+    text-align: center;
+  }
+}
