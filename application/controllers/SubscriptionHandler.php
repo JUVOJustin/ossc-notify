@@ -91,7 +91,7 @@
             $this->load->library('email');
 
             //E-Mail Config
-            $this->email->from('noreply@juvo-design.de', 'Klausur Notifier');
+            $this->email->from('noreply@hsd-notify.de', 'HSD Notify');
             $this->email->to($this->user_email);
 
             $this->email->subject('Empfang Verifizieren');
