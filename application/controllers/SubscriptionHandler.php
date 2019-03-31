@@ -6,6 +6,7 @@
 
         public function __contruct() {
             parent::__construct();
+            $this->load->model('SubscriptionHandler_Model');
         }
 
         public function index() {
@@ -18,8 +19,6 @@
             $data = array(
                 'valid' => False,
             );
-
-            //|is_unique[users.email]
 
             //Validate Mail
             $this->form_validation->set_rules('emailaddress', 'E-Mail', 'required|valid_email|is_unique[subscriptions.email]', 
@@ -46,6 +45,12 @@
                 $this->newSubscribe();
                 $this->load->view('subscription-handler', $data);
             }
+
+            //Check if validation request
+            if (isset($_GET['uid']) && isset($_GET['v'])) {
+                $this->validateSubscription($_GET['uid']);
+            }
+
         }
 
         public function honeypot_check($str) {
@@ -73,22 +78,38 @@
             if($this->SubscriptionHandler_Model->check_email($this->user_email)) { 
                 //Add user to database
                 $this->SubscriptionHandler_Model->add_subscriber($this->user_id, $this->user_email, $this->validated);
+
+                $this->sendVerification();
             }
         }
 
         private function sendVerification() {
+
             $this->load->library('email');
 
-            $this->email->from('noreply@'.base_url(), 'Klausur Notifier');
+            //E-Mail Config
+            $this->email->from('noreply@juvo-design.de', 'Klausur Notifier');
             $this->email->to($this->user_email);
 
             $this->email->subject('Empfang Verifizieren');
             $this->email->message('<h2>Hallo,</h2>
             du hast dich in den Verteiler für Benachrichtigungen zu neuen Klausuren eingetragen.<br>
             Bitte bestätige deine Anmeldung hier: <b><a href="'. base_url() .'?uid='.$this->user_id.'&v=1></a></b>');
-            $this->email->mailtype('html');
 
             $this->email->send();
+            $this->email->print_debugger(array('headers'));
+        }
+
+        
+        private function validateSubscription($uid) {
+
+            $this->load->model('SubscriptionHandler_Model');
+
+            //If User already exists and is not verified
+            if ($this->SubscriptionHandler_Model->check_id($uid) && !$this->SubscriptionHandler_Model->check_verified($uid)) {
+                //Verify User
+                $this->SubscriptionHandler_Model->validateSubscription($uid);
+            }
         }
 
     }

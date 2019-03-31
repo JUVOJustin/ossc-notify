@@ -22,6 +22,16 @@ class SubscriptionHandler_Model extends CI_Model {
                 }
         }
 
+        public function check_verified($id) {
+                //$query = $this->db->simple_query('Select id from subscriptions where id = '.$id);
+                $query = $this->db->get_where('subscriptions', array('id' => $id, 'verified' => 1) );
+                if ($query->num_rows > 0){
+                        return FALSE;
+                } else {
+                        return TRUE;
+                }
+        }
+
         public function add_subscriber($id, $email, $verified) {
                 $data = array(
                         'id' => $id,
@@ -30,6 +40,12 @@ class SubscriptionHandler_Model extends CI_Model {
                 );
                 
                 $this->db->insert('subscriptions', $data);
+        }
+
+        public function validateSubscription($id) {
+                $this->db->set('verified', 1);
+                $this->db->where('id', $id);
+                $this->db->update('subscriptions');
         }
 
 }
