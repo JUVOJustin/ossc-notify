@@ -18,7 +18,15 @@
             //Keys are variables that can be used in view
             $data = array(
                 'valid' => False,
+                'verified' => FALSE,
             );
+
+            //Check if validation request
+            if (isset($_GET['uid']) && isset($_GET['v'])) {
+
+                if($this->validateSubscription($_GET['uid']))
+                    $data['verified'] = TRUE;
+            }
 
             //Validate Mail
             $this->form_validation->set_rules('emailaddress', 'E-Mail', 'required|valid_email|is_unique[subscriptions.email]', 
@@ -41,14 +49,9 @@
                 $this->load->view('subscription-handler', $data);
             } else {
                 //Load view with success message and execute signup code
-                $data = array('valid' => True);
+                $data['valid'] = True;
                 $this->newSubscribe();
                 $this->load->view('subscription-handler', $data);
-            }
-
-            //Check if validation request
-            if (isset($_GET['uid']) && isset($_GET['v'])) {
-                $this->validateSubscription($_GET['uid']);
             }
 
         }
@@ -70,12 +73,12 @@
             $this->validated = 0;
 
             //Generate random ID again if already used
-            while (!$this->SubscriptionHandler_Model->check_id($this->user_id)) {
+            while ($this->SubscriptionHandler_Model->check_id($this->user_id)) {
                 $this->user_id = mt_rand(000000, 999999);
             }
 
-            //Check if mail is already used
-            if($this->SubscriptionHandler_Model->check_email($this->user_email)) { 
+            //Check if mail is already used, if not
+            if(!$this->SubscriptionHandler_Model->check_email($this->user_email)) { 
                 //Add user to database
                 $this->SubscriptionHandler_Model->add_subscriber($this->user_id, $this->user_email, $this->validated);
 
@@ -109,7 +112,11 @@
             if ($this->SubscriptionHandler_Model->check_id($uid) && !$this->SubscriptionHandler_Model->check_verified($uid)) {
                 //Verify User
                 $this->SubscriptionHandler_Model->validateSubscription($uid);
+
+                return TRUE;
             }
+
+            return FALSE;
         }
 
     }

@@ -3,6 +3,7 @@
 # Config Files
 #-------------------------
 application/config/database.php
+application/config/config.php
 
 application/cache/*
 !application/cache/index.html

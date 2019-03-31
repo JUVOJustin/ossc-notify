@@ -15,7 +15,9 @@
 
             <?php if ($valid) {
                 echo '<p class="success">Du hast eine Bestätigungsmail erhalten</p>';
-            } else {
+            } elseif ($verified == TRUE) {
+                echo '<p class="success">Du bist nun verifiziert und erhälst künftig Benachrichtigungen</p>';
+            } else{
                 echo validation_errors();
             } ?>
         </div>
