@@ -95,12 +95,8 @@
             $this->email->to($this->user_email);
 
             $this->email->subject('Empfang Verifizieren');
-            $this->email->message('<h2>Hallo,</h2>
-            du hast dich in den Verteiler für Benachrichtigungen zu neuen Klausuren eingetragen.<br>
-            Bitte bestätige deine Anmeldung hier: <b><a href="'. base_url() .'?uid='.$this->user_id.'&v=1></a></b>');
-
+            $this->email->message('<h2>Hallo,</h2>du hast dich in den Verteiler für Benachrichtigungen zu neuen Klausuren eingetragen.<br>Bitte bestätige deine Anmeldung hier: <b><a href="'. base_url() .'?uid='.$this->user_id.'&v=1></a></b>');
             $this->email->send();
-            $this->email->print_debugger(array('headers'));
         }
 
         
