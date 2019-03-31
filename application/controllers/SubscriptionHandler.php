@@ -89,6 +89,7 @@
         private function sendVerification() {
 
             $this->load->library('email');
+            $this->email->set_mailtype("html");
 
             //E-Mail Config
             $this->email->from('noreply@hsd-notify.de', 'HSD Notify');
