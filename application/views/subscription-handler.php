@@ -23,7 +23,7 @@
         </div>
 
         <div class="pure-u-1 pure-u-lg-1-2 subscribe-form">
-            <?php echo form_open('subscriptionHandler', array('class' => 'pure-form pure-form-aligned') ); ?>
+            <?php echo form_open('', array('class' => 'pure-form pure-form-aligned') ); ?>
             <fieldset>
                 <div class="pure-control-group">
                     <label for="emailaddress">E-Mail</label><input type="email" id="emailaddress" name="emailaddress" placeholder="mail@tld.com" required>
